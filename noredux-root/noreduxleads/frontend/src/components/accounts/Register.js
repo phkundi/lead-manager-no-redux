@@ -1,48 +1,18 @@
 import React, { useContext } from "react";
 import { Link, Redirect } from "react-router-dom";
 import useInputState from "../../hooks/useInputState";
-import { createMessage, returnErrors } from "../../actions/messages";
+import { createMessage } from "../../actions/messages";
 import { MessageContext } from "../../context/messageContext";
-import { AuthContext } from "../../context/authContext";
-import { ErrorContext } from "../../context/errorContext";
-import { REGISTER_SUCCESS, REGISTER_FAIL } from "../../actions/types";
-import axios from "axios";
+import useAuthState from "../../hooks/useAuthState";
 
 function Register() {
-  const { auth, dispatchAuth } = useContext(AuthContext);
-  const { dispatchErrors } = useContext(ErrorContext);
+  const { registerUser, auth } = useAuthState();
   const { dispatchMessages } = useContext(MessageContext);
 
   const [username, setUsername] = useInputState("");
   const [email, setEmail] = useInputState("");
   const [password, setPassword] = useInputState("");
   const [password2, setPassword2] = useInputState("");
-
-  const registerUser = ({ username, password, email }) => {
-    // headers
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    // Request body
-    const body = JSON.stringify({
-      username,
-      password,
-      email,
-    });
-
-    axios
-      .post("/api/auth/register/", body, config)
-      .then((res) => {
-        dispatchAuth({ type: REGISTER_SUCCESS, payload: res.data });
-      })
-      .catch((err) => {
-        dispatchErrors(returnErrors(err.response.data, err.response.status));
-        dispatchAuth({ type: REGISTER_FAIL });
-      });
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();

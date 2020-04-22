@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
-import axios from "axios";
 
-function Leads({ state, getLeads, deleteLead }) {
+function Leads({ leads, getLeads, deleteLead }) {
   useEffect(() => {
     getLeads();
   }, []);
@@ -20,7 +19,7 @@ function Leads({ state, getLeads, deleteLead }) {
           </tr>
         </thead>
         <tbody>
-          {state.leads.map((lead) => (
+          {leads.leads.map((lead) => (
             <tr key={lead.id}>
               <td>{lead.id}</td>
               <td>{lead.name}</td>

@@ -8,8 +8,8 @@ const initialState = {
 };
 
 export function LeadProvider(props) {
-  const [state, dispatch] = useReducer(leadReducer, initialState);
-  const value = { state, dispatch };
+  const [leads, dispatchLeads] = useReducer(leadReducer, initialState);
+  const value = { leads, dispatchLeads };
   return (
     <LeadContext.Provider value={value}>{props.children}</LeadContext.Provider>
   );

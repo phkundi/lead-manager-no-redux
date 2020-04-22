@@ -1,42 +1,12 @@
 import React, { useState, useContext } from "react";
-import axios from "axios";
 import { Link, Redirect } from "react-router-dom";
 import useInputState from "../../hooks/useInputState";
-import { AuthContext } from "../../context/authContext";
-import { ErrorContext } from "../../context/errorContext";
-import { returnErrors } from "../../actions/messages";
-import { LOGIN_SUCCESS, LOGIN_FAIL } from "../../actions/types";
+import useAuthState from "../../hooks/useAuthState";
 
 function Login() {
-  const { auth, dispatchAuth } = useContext(AuthContext);
-  const { dispatchErrors } = useContext(ErrorContext);
+  const { loginUser, auth } = useAuthState();
   const [username, setUsername, resetUsername] = useInputState("");
   const [password, setPassword, resetPassword] = useInputState("");
-
-  const loginUser = (username, password) => {
-    // headers
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    // Request body
-    const body = JSON.stringify({
-      username,
-      password,
-    });
-
-    axios
-      .post("/api/auth/login/", body, config)
-      .then((res) => {
-        dispatchAuth({ type: LOGIN_SUCCESS, payload: res.data });
-      })
-      .catch((err) => {
-        dispatchErrors(returnErrors(err.response.data, err.response.status));
-        dispatchAuth({ type: LOGIN_FAIL });
-      });
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
